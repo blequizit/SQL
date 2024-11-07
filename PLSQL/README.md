@@ -44,3 +44,34 @@ END;
 - A estrutura CASE é utilizada para verificar o valor da variável pais e imprimir uma mensagem específica dependendo do país informado:
   - Se o país for "BRASIL", "ARGENTINA", "URUGUAI" ou "CHILE", o script imprime uma mensagem dizendo que o país está na América.
   - Caso contrário, imprime uma mensagem informando que o país não é reconhecido.
+ 
+### 2. **Cores.sql**
+**Descrição**: Este script solicita ao usuário a entrada de uma cor e verifica se ela está presente nas cores da bandeira de um país. O script utiliza o operador `IN` para checar se a cor informada está na lista predefinida de cores (AMARELO, VERDE, AZUL, BRANCO) e exibe uma mensagem de acordo com o resultado.
+
+**Código:**
+```sql
+-- ENTRE COM UMA COR PARA VERIFICAR SE ELA ESTA NA BANDEIRA
+-- Racional: O script recebe uma cor e verifica se ela faz parte da lista de cores da bandeira.
+
+SET SERVEROUTPUT ON
+
+ACCEPT cor PROMPT 'Entre com a cor';
+
+DECLARE
+    cor VARCHAR2(15) := UPPER('&cor');
+BEGIN
+    IF cor IN ('AMARELO', 'VERDE', 'AZUL', 'BRANCO') THEN
+        DBMS_OUTPUT.PUT_LINE(cor || ' esta na bandeira');
+    ELSE
+        DBMS_OUTPUT.PUT_LINE(cor || ' NAO esta na bandeira');
+    END IF;
+END;
+```
+
+**Explicação**
+- O script começa com o comando SET SERVEROUTPUT ON, que ativa a exibição de mensagens no console.
+- A instrução ACCEPT solicita que o usuário insira o nome de uma cor quando o script for executado.
+- A variável cor é declarada no bloco DECLARE e recebe o valor inserido pelo usuário, sendo convertida para maiúsculas com a função UPPER.
+- O script utiliza o operador IN para verificar se a cor informada está na lista de cores ('AMARELO', 'VERDE', 'AZUL', 'BRANCO').
+    - Se a cor estiver na lista, uma mensagem é exibida informando que a cor está presente na bandeira.
+    - Caso contrário, o script imprime uma mensagem dizendo que a cor não está na bandeira.
