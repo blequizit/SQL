@@ -374,3 +374,53 @@ END;
 
 ## Considerações Finais
 Essas abordagens demonstram diferentes formas de trabalhar com cursores e recuperação de dados no Oracle PL/SQL, variando de consultas simples a manipulação mais avançada com cursores explícitos e tipos de dados. Essas técnicas são úteis para quem precisa manipular grandes volumes de dados ou executar operações iterativas em PL/SQL.
+
+# Conceitos Aprendidos
+
+## Estrutura e Sintaxe Básica do PL/SQL
+
+### Organização em Blocos PL/SQL
+- **Blocos PL/SQL**: O código em PL/SQL é organizado em blocos que contêm seções de **declaração**, **execução** e **exceção**.
+- **Comandos de Console e Entrada de Usuário**: Utiliza o comando `SET SERVEROUTPUT ON` para exibir saídas no console e `ACCEPT` para capturar entradas, permitindo interação com o usuário no SQL*Plus.
+
+## Controle de Fluxo e Estruturas Condicionais
+
+### Estruturas de Decisão
+- **Estruturas CASE e IF**: Aplicação de `CASE` e `IF` para verificar condições e realizar operações com base na entrada do usuário, como em `Americas.sql` e `Cores.sql`.
+- **Operador IN**: Utilizado para verificar a presença de um valor em uma lista.
+- **BETWEEN**: Usado para verificar se um número está em uma faixa específica.
+
+### Operadores e Comparações
+- Uso de operadores aritméticos e de comparação (ex.: `<>`, `MOD`) para realizar cálculos e validações no script `Operadores.sql`.
+
+## Uso de Funções e Manipulação de Dados
+
+### Funções Matemáticas
+- Realizou operações matemáticas básicas e cálculo de médias.
+
+### Manipulação de Texto
+- Aplicou funções de manipulação de texto, como `UPPER`, para comparações sem distinção de maiúsculas e minúsculas.
+
+## Cursores e Manipulação de Dados em Tabelas
+
+### Cursores Simples e Explícitos
+- **Cursores**: Uso de cursores para iterar sobre registros de tabelas e exibir dados específicos (como títulos de livros e nomes de autores) no script `CursoresBS.sql`.
+- Diferenciou entre cursores **explícitos** e **implícitos** para otimizar o código e facilitar a manipulação dos dados retornados.
+
+### FOR Loops e Cursores
+- **FOR Loop**: Emprego do loop `FOR` com cursores implícitos para iterar sobre consultas, simplificando o código ao evitar a necessidade de declarar e fechar cursores manualmente.
+
+### ROWTYPE e Tipagem Dinâmica
+- Uso de `%ROWTYPE` para definir variáveis que armazenam uma linha completa de dados, tornando o código mais limpo e de fácil manutenção, especialmente ao trabalhar com múltiplas colunas.
+
+## Abordagem Procedural e Modularização
+
+- **Procedures e Funções**: Conceito de encapsular lógicas em módulos reutilizáveis, permitindo fácil integração de blocos de código.
+
+## Integração e Joins de Tabelas
+
+- **Manipulação de Dados com JOIN**: Combinação de dados de múltiplas tabelas (ex.: `T_BS_LIVRO` e `T_BS_AUTOR`) para exibir informações relacionadas, essencial para aplicações em cenários reais.
+
+## Boas Práticas em PL/SQL
+
+- **Comentários e Documentação**: Documentação clara com comentários explicando o propósito de cada script e o processo, facilitando a compreensão e manutenção do código.
