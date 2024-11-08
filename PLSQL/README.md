@@ -136,3 +136,28 @@ END;
     - Se o número estiver entre 1 e 10, o script imprime "1a faixa".
     - Se o número estiver entre 11 e 20, imprime "2a faixa" e, adicionalmente, se o número for 13, 17 ou 18, ele imprime "Adivinhou o numero".
     - Se o número estiver fora dessas faixas, o script imprime "faixa invalida".
+
+### 5. **MediaDoisValores.sql**
+**Descrição**: Este script solicita ao usuário a entrada de dois valores numéricos e calcula a média entre esses valores. O resultado da média é exibido no console.
+
+**Código:**
+```sql
+SET SERVEROUTPUT ON
+
+ACCEPT v1 PROMPT 'Entre com primeiro valor';
+ACCEPT v2 PROMPT 'Entre com segundo valor';
+
+DECLARE
+    n1 NUMBER := &v1;
+    n2 NUMBER := &v2;
+    total NUMBER;
+BEGIN
+    total := (n1 + n2) / 2;
+    DBMS_OUTPUT.PUT_LINE('A media dos valores ' || n1 || ' e ' || n2 || ' é ' || total);
+END;
+```
+**Explicação**
+- O script começa com o comando SET SERVEROUTPUT ON, que ativa a exibição de mensagens no console.
+- A instrução ACCEPT é utilizada para solicitar ao usuário que insira dois valores numéricos quando o script for executado. Esses valores são armazenados nas variáveis &v1 e &v2.
+- No bloco DECLARE, as variáveis n1 e n2 são inicializadas com os valores fornecidos pelo usuário, e a variável total é declarada para armazenar o resultado da média.
+- No bloco BEGIN...END, a média dos dois valores é calculada e armazenada na variável total. A função DBMS_OUTPUT.PUT_LINE é então utilizada para exibir no console a média dos dois valores inseridos, juntamente com a mensagem explicativa.
