@@ -195,3 +195,182 @@ END;
 - Segunda operação: A variável resultado é então modificada para armazenar o resultado da operação 10 mod 3, que calcula o resto da divisão (no caso, 10 mod 3 resulta em 1).
 - Verificação de desigualdade: Usando a instrução IF, o script verifica se o valor de resultado é diferente de 4. Como o valor de resultado é 1, o script imprime a mensagem "O resultado é diferente de 4".
 - A função DBMS_OUTPUT.PUT_LINE é usada para exibir os resultados das operações e das comparações no console.
+
+### 7. **CursoresBS.sql**
+
+**Descrição**: Este script explora o uso de cursores no Oracle PL/SQL para recuperar dados da tabela `T_BS_LIVRO`, com o objetivo de exibir títulos de livros e seus respectivos autores. O script utiliza diferentes abordagens para manipulação de dados, incluindo abordagens sem cursor e com cursor explícito, utilizando `FETCH`, `LOOP` e `DBMS_OUTPUT` para exibir os resultados.
+
+## 1. Abordagem sem cursor para um único título
+
+### Código:
+```sql
+SET SERVEROUTPUT ON
+
+DECLARE
+    v_cod NUMBER;
+    v_titulo VARCHAR2(200);
+BEGIN
+    SELECT cd_codigo, tx_titulo
+    INTO v_cod, v_titulo
+    FROM T_BS_LIVRO WHERE cd_codigo = 3;
+    DBMS_OUTPUT.PUT_LINE(v_cod || '-' || v_titulo);
+END;
+```
+
+**Explicação**
+- Este bloco declara duas variáveis (v_cod e v_titulo) para armazenar o código e o título do livro.
+- A consulta SELECT é executada para buscar o livro com cd_codigo = 3 na tabela T_BS_LIVRO.
+- O resultado da consulta é armazenado nas variáveis e exibido com o comando DBMS_OUTPUT.PUT_LINE, concatenando o código e o título do livro.
+
+## 2. Abordagem sem cursor para todos os títulos
+
+### Código:
+```sql
+SET SERVEROUTPUT ON
+
+DECLARE
+    v_cod T_BS_LIVRO.cd_codigo%TYPE;
+    v_titulo T_BS_LIVRO.tx_titulo%TYPE;
+    i INTEGER;
+BEGIN
+    FOR i IN 1..18
+    LOOP
+        SELECT cd_codigo, tx_titulo
+        INTO v_cod, v_titulo
+        FROM T_BS_LIVRO WHERE cd_codigo = i;
+        DBMS_OUTPUT.PUT_LINE(v_cod || '-' || v_titulo);
+    END LOOP;
+END;
+```
+**Explicação**
+- O script usa um FOR LOOP para iterar sobre os códigos dos livros de 1 a 18 (supondo que existam 18 livros na tabela).
+- A cada iteração, a consulta SELECT busca o código e o título do livro correspondente ao código i.
+- O resultado é exibido na tela usando DBMS_OUTPUT.PUT_LINE.
+
+## 3. Abordagem com cursor explícito para todos os títulos
+
+### Código:
+```sql
+SET SERVEROUTPUT ON
+
+DECLARE
+    v_cod T_BS_LIVRO.cd_codigo%TYPE;
+    v_titulo T_BS_LIVRO.tx_titulo%TYPE;
+    i INTEGER;
+    
+    CURSOR c_livro IS
+        SELECT cd_codigo, tx_titulo FROM T_BS_LIVRO;
+BEGIN
+    OPEN c_livro; -- Abre o cursor
+    LOOP
+        FETCH c_livro INTO v_cod, v_titulo; -- Recupera o próximo conjunto de dados
+        EXIT WHEN c_livro%NOTFOUND; -- Sai do loop quando não houver mais registros
+        DBMS_OUTPUT.PUT_LINE(v_cod || '-' || v_titulo); -- Exibe o resultado
+    END LOOP;
+    CLOSE c_livro; -- Fecha o cursor
+END;
+```
+
+**Explicação**
+- Este script utiliza um cursor explícito para iterar sobre todos os livros na tabela T_BS_LIVRO.
+- O cursor c_livro é definido com uma consulta que seleciona o código e o título de todos os livros.
+- A operação OPEN c_livro abre o cursor, e FETCH c_livro INTO v_cod, v_titulo recupera os dados de cada linha.
+- O loop continua até que todos os registros sejam processados (EXIT WHEN c_livro%NOTFOUND), e o cursor é fechado com CLOSE c_livro.
+
+## 4. Abordagem com cursor explícito para livros e autores
+### Código:
+```sql
+SET SERVEROUTPUT ON
+
+DECLARE
+    CURSOR c_tit_autor IS
+    SELECT
+        UPPER(l.tx_titulo) AS tx_titulo,
+        l.nr_numero_paginas,
+        a.nm_autor
+    FROM 
+        T_BS_LIVRO l
+        INNER JOIN T_BS_AUTOR a
+        ON (a.cd_codigo = l.cd_codigo_autor);
+    
+    v_titulo T_BS_LIVRO.tx_titulo%TYPE;
+    v_pag T_BS_LIVRO.nr_numero_paginas%TYPE;
+    v_autor T_BS_AUTOR.nm_autor%TYPE;
+
+BEGIN
+    OPEN c_tit_autor;
+    LOOP
+        FETCH c_tit_autor INTO v_titulo, v_pag, v_autor;
+        EXIT WHEN c_tit_autor%NOTFOUND;
+        DBMS_OUTPUT.PUT_LINE(v_titulo || '-' || v_pag || '-' || v_autor);
+    END LOOP;
+    CLOSE c_tit_autor;
+END;
+```
+
+**Explicação**
+- Este bloco de código faz um JOIN entre as tabelas T_BS_LIVRO e T_BS_AUTOR para recuperar o título do livro, o número de páginas e o nome do autor.
+- O cursor c_tit_autor é aberto e percorre todos os livros e seus respectivos autores.
+- O comando FETCH recupera os dados para as variáveis v_titulo, v_pag e v_autor.
+- Cada resultado é exibido no formato título - número de páginas - autor usando DBMS_OUTPUT.PUT_LINE.
+- O cursor é fechado após a execução do loop.
+
+## 5. Abordagem com ROWTYPE para livros e autores
+### Código:
+```sql
+SET SERVEROUTPUT ON
+
+DECLARE
+    CURSOR c_tit_autor IS
+    SELECT
+        UPPER(l.tx_titulo) AS tx_titulo,
+        l.nr_numero_paginas,
+        a.nm_autor
+    FROM 
+        T_BS_LIVRO l
+        INNER JOIN T_BS_AUTOR a
+        ON (a.cd_codigo = l.cd_codigo_autor);
+    
+    ltit_autor c_tit_autor%ROWTYPE;
+
+BEGIN
+    OPEN c_tit_autor;
+    LOOP
+        FETCH c_tit_autor INTO ltit_autor;
+        EXIT WHEN c_tit_autor%NOTFOUND;
+        DBMS_OUTPUT.PUT_LINE(ltit_autor.tx_titulo || '-' || ltit_autor.nr_numero_paginas || '-' || ltit_autor.nm_autor);
+    END LOOP;
+    CLOSE c_tit_autor;
+END;
+```
+
+**Explicação**
+- Nesta abordagem, o script utiliza o tipo ROWTYPE para armazenar os resultados do cursor em uma variável que corresponde exatamente à estrutura das colunas retornadas pela consulta.
+- A variável ltit_autor é do tipo ROWTYPE do cursor c_tit_autor, o que significa que ela pode armazenar todas as colunas (título, número de páginas e autor) como uma única variável.
+- O loop continua a buscar e exibir os resultados no formato título - número de páginas - autor até que todos os registros sejam processados.
+
+## 6. Abordagem com FOR loop para livros e autores
+### Código:
+```sql
+DECLARE
+BEGIN
+    FOR linha IN
+    (
+        SELECT
+            l.tx_titulo, l.nr_numero_paginas, a.nm_autor
+        FROM 
+            T_BS_LIVRO l 
+        INNER JOIN T_BS_AUTOR a
+        ON (a.cd_codigo = l.cd_codigo_autor)
+    ) LOOP
+        DBMS_OUTPUT.PUT_LINE(linha.tx_titulo || '-' || linha.nr_numero_paginas || '-' || linha.nm_autor);
+    END LOOP;
+END;
+```
+**Explicação**
+- Esta abordagem usa um FOR LOOP implícito no qual a consulta SELECT é executada diretamente dentro do loop.
+- Cada linha retornada pela consulta é automaticamente processada dentro do loop, e os resultados são exibidos no formato título - número de páginas - autor.
+- Não há necessidade de declarar variáveis explícitas ou usar cursores, já que o FOR loop cuida da iteração sobre os resultados da consulta.
+
+## Considerações Finais
+Essas abordagens demonstram diferentes formas de trabalhar com cursores e recuperação de dados no Oracle PL/SQL, variando de consultas simples a manipulação mais avançada com cursores explícitos e tipos de dados. Essas técnicas são úteis para quem precisa manipular grandes volumes de dados ou executar operações iterativas em PL/SQL.
