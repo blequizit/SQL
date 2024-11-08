@@ -98,3 +98,41 @@ END;
 - A instrução ACCEPT solicita que o usuário insira um valor numérico ao executar o script. O valor inserido é armazenado na variável de substituição &valor.
 - No bloco DECLARE, uma variável n do tipo NUMBER é declarada e recebe o valor digitado pelo usuário.
 - No bloco BEGIN...END, a função DBMS_OUTPUT.PUT_LINE imprime o valor da variável n, exibindo uma mensagem no console que informa o número que foi digitado.
+
+### 4. **FaixaValores.sql**
+**Descrição**: Este script solicita ao usuário a entrada de um número e verifica em qual faixa o número se encontra. O script possui três faixas definidas:
+- Faixa 1: Números entre 1 e 10.
+- Faixa 2: Números entre 11 e 20.
+Além disso, ele faz uma verificação especial para números específicos (13, 17, 18), que imprime a mensagem "Adivinhou o número" se o número inserido for um desses.
+
+**Código:**
+```sql
+--FAIXA DE VALORES 
+--1a faixa 1 a 10
+--2a faixa 11 a 20
+SET SERVEROUTPUT ON
+ACCEPT numero PROMPT 'Entre com um numero'
+
+DECLARE
+    numero NUMBER := &numero;
+BEGIN
+    IF numero BETWEEN 1 AND 10 THEN
+        DBMS_OUTPUT.PUT_LINE('1a faixa');
+    ELSIF numero BETWEEN 11 AND 20 THEN
+        DBMS_OUTPUT.PUT_LINE('2a faixa');
+        IF numero IN (13, 17, 18) THEN
+            DBMS_OUTPUT.PUT_LINE('Adivinhou o numero');
+        END IF;
+    ELSE
+        DBMS_OUTPUT.PUT_LINE('faixa invalida');
+    END IF;    
+END;
+```
+**Explicação**
+- O script começa com o comando SET SERVEROUTPUT ON, que habilita a exibição de mensagens no console, permitindo que o usuário veja a saída do script.
+- A instrução ACCEPT solicita que o usuário insira um número ao executar o script. O número inserido é armazenado na variável de substituição &numero.
+- O bloco DECLARE inicializa a variável numero com o valor digitado pelo usuário.
+- O script então verifica se o número está na faixa de 1 a 10 ou de 11 a 20 usando o comando BETWEEN.
+    - Se o número estiver entre 1 e 10, o script imprime "1a faixa".
+    - Se o número estiver entre 11 e 20, imprime "2a faixa" e, adicionalmente, se o número for 13, 17 ou 18, ele imprime "Adivinhou o numero".
+    - Se o número estiver fora dessas faixas, o script imprime "faixa invalida".
