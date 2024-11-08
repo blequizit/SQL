@@ -161,3 +161,37 @@ END;
 - A instrução ACCEPT é utilizada para solicitar ao usuário que insira dois valores numéricos quando o script for executado. Esses valores são armazenados nas variáveis &v1 e &v2.
 - No bloco DECLARE, as variáveis n1 e n2 são inicializadas com os valores fornecidos pelo usuário, e a variável total é declarada para armazenar o resultado da média.
 - No bloco BEGIN...END, a média dos dois valores é calculada e armazenada na variável total. A função DBMS_OUTPUT.PUT_LINE é então utilizada para exibir no console a média dos dois valores inseridos, juntamente com a mensagem explicativa.
+
+
+### 6. **Operadores.sql**
+**Descrição**: Este script demonstra o uso de operadores aritméticos e de comparação no Oracle PL/SQL. Ele realiza uma divisão simples, uma operação de módulo, e utiliza a comparação de desigualdade (`<>`) para verificar se o resultado é igual a 4.
+
+**Código:**
+```sql
+SET SERVEROUTPUT ON
+DECLARE
+    resultado NUMBER := 0;
+BEGIN
+    -- Realiza a divisão simples
+    resultado := 1 / 2;
+    DBMS_OUTPUT.PUT_LINE(resultado);
+
+    -- Realiza a operação de módulo (resto da divisão)
+    resultado := 10 mod 3;
+    DBMS_OUTPUT.PUT_LINE(resultado);
+
+    -- Verifica a desigualdade
+    IF resultado <> 4 THEN
+        DBMS_OUTPUT.PUT_LINE('O resultado é diferente de 4');
+    ELSE
+        DBMS_OUTPUT.PUT_LINE('O resultado é igual a 4');
+    END IF;
+END;
+```
+**Explicação**
+- O script começa com o comando SET SERVEROUTPUT ON, que habilita a exibição de mensagens no console.
+- No bloco DECLARE, é declarada a variável resultado para armazenar os resultados das operações.
+- Primeira operação: A variável resultado recebe o valor da divisão 1 / 2, que resulta em 0.5 (como o Oracle trata números decimais).
+- Segunda operação: A variável resultado é então modificada para armazenar o resultado da operação 10 mod 3, que calcula o resto da divisão (no caso, 10 mod 3 resulta em 1).
+- Verificação de desigualdade: Usando a instrução IF, o script verifica se o valor de resultado é diferente de 4. Como o valor de resultado é 1, o script imprime a mensagem "O resultado é diferente de 4".
+- A função DBMS_OUTPUT.PUT_LINE é usada para exibir os resultados das operações e das comparações no console.
