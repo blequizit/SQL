@@ -75,3 +75,26 @@ END;
 - O script utiliza o operador IN para verificar se a cor informada está na lista de cores ('AMARELO', 'VERDE', 'AZUL', 'BRANCO').
     - Se a cor estiver na lista, uma mensagem é exibida informando que a cor está presente na bandeira.
     - Caso contrário, o script imprime uma mensagem dizendo que a cor não está na bandeira.
+
+### 3. **EntradaDados.sql**
+**Descrição**: Este script solicita ao usuário a entrada de um valor numérico e o exibe no console. Ele utiliza o comando `ACCEPT` para capturar a entrada do usuário e o bloco `PL/SQL` para processá-la e exibi-la na tela.
+
+**Código:**
+```sql
+SET SERVEROUTPUT ON
+-- O INPUT NO PL/SQL NÃO É UMA COISA COMUM, ENTÃO A GENTE ACABA USANDO OS COMANDOS DO SQLPLUS
+-- Configuração da janela que pede os dados
+ACCEPT valor PROMPT 'Digite o valor:';
+
+DECLARE
+    -- Aqui estamos trazendo o valor da janela e transferindo para o programa propriamente dito
+    n NUMBER := &valor;
+BEGIN
+    DBMS_OUTPUT.PUT_LINE('Você digitou ' || n);
+END;
+```
+**Explicação**
+- O script começa com o comando SET SERVEROUTPUT ON, que habilita a exibição de mensagens no console. Esse comando é necessário para que a função DBMS_OUTPUT.PUT_LINE mostre a saída no terminal.
+- A instrução ACCEPT solicita que o usuário insira um valor numérico ao executar o script. O valor inserido é armazenado na variável de substituição &valor.
+- No bloco DECLARE, uma variável n do tipo NUMBER é declarada e recebe o valor digitado pelo usuário.
+- No bloco BEGIN...END, a função DBMS_OUTPUT.PUT_LINE imprime o valor da variável n, exibindo uma mensagem no console que informa o número que foi digitado.
