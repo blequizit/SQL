@@ -37,7 +37,7 @@ Scripts e exemplos de **procedimentos e funções** armazenados, incluindo:
 
 1. Clone o repositório:
     ```bash
-    git clone https://github.com/seu-usuario/nome-do-repositorio.git
+    git clone https://github.com/blequizit/SQL
     ```
 
 2. Acesse a pasta desejada para explorar os scripts correspondentes ao tema de estudo.
